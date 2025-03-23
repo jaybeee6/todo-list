@@ -1,10 +1,4 @@
-import {
-  Button,
-  Container,
-  Divider,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Button, Container, TextField, Typography } from "@mui/material";
 import { useAuthenticationHelper } from "./authentication.helper";
 
 export const Authentication = () => {
