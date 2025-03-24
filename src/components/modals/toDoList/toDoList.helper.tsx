@@ -22,7 +22,7 @@ export interface UseToDoListModalHookOutput {
   >;
   handleToDoEdition: (index: number) => void;
   handleUpdateToDo: (id: string) => Promise<void>;
-  filteredTasks: ToDoItem[];
+  filteredTodos: ToDoItem[];
   username: string;
   handleDateFormat: (date: string) => string;
 }
@@ -46,10 +46,22 @@ export const useToDoListModalHelper = (): UseToDoListModalHookOutput => {
 
   const [filter, setFilter] = useState<"all" | "pending" | "completed">("all");
 
+  const filteredTodos = todos.filter((todo) => {
+    if (filter === "pending" && todo.autor === username) {
+      return todo.status === ToDoStatus.ONGOING;
+    } else if (filter === "completed" && todo.autor === username) {
+      return todo.status === ToDoStatus.FINISHED;
+    } else if (todo.autor === username) {
+      return true;
+    } else {
+      return false;
+    }
+  });
+
   const handleToDoEdition = (index: number) => {
     setEditingIndex(index);
-    setEditedDescriptionToDo(todos[index].description);
-    setEditedBeginDateToDo(todos[index].beginDate);
+    setEditedDescriptionToDo(filteredTodos[index].description);
+    setEditedBeginDateToDo(filteredTodos[index].beginDate);
   };
 
   const handleUpdateToDo = async (id: string) => {
@@ -84,18 +96,6 @@ export const useToDoListModalHelper = (): UseToDoListModalHookOutput => {
     await supabase.from("todos").delete().eq("id", id);
   };
 
-  const filteredTasks = todos.filter((todo) => {
-    if (filter === "pending" && todo.autor === username) {
-      return todo.status === ToDoStatus.ONGOING;
-    } else if (filter === "completed" && todo.autor === username) {
-      return todo.status === ToDoStatus.FINISHED;
-    } else if (todo.autor === username) {
-      return true;
-    } else {
-      return false;
-    }
-  });
-
   const handleDateFormat = (date: string): string => {
     return new Date(date).toLocaleDateString();
   };
@@ -104,7 +104,7 @@ export const useToDoListModalHelper = (): UseToDoListModalHookOutput => {
     editedBeginDateToDo,
     editedDescriptionToDo,
     filter,
-    filteredTasks,
+    filteredTodos,
     handleDeleteToDo,
     handleToDoEdition,
     handleUpdateToDo,
