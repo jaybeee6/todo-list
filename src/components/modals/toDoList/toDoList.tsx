@@ -28,7 +28,7 @@ export const ToDoListModal = () => {
     editedBeginDateToDo,
     editedDescriptionToDo,
     filter,
-    filteredTasks,
+    filteredTodos,
     handleDeleteToDo,
     handleToDoEdition,
     handleUpdateToDo,
@@ -121,8 +121,8 @@ export const ToDoListModal = () => {
           }}
         >
           <List>
-            {filteredTasks.length > 0 ? (
-              filteredTasks.map((todo, index) => (
+            {filteredTodos.length > 0 ? (
+              filteredTodos.map((todo, index) => (
                 <ListItem
                   key={index}
                   sx={{
